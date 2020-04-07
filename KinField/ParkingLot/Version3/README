@@ -1,0 +1,4 @@
+Simulation done with H instead of A.
+Rainfall not multiplied by width.
+Q at outflow not multiplied by width.
+Multiplied by width and then divided by length of the edge when routing water into the channel 

@@ -1,0 +1,181 @@
+void calculate_flow_paths()
+{
+    FlowPaths = (struct node**) malloc(boundaryElNum*sizeof(struct node*));
+    struct node* boundaryElCounter = boundaryEl;
+    
+    int i = 0;
+    while (boundaryElCounter->num != -1)
+    {
+        int el = boundaryElCounter->num;
+        
+        FlowPaths[i] = (struct node*) malloc(sizeof(struct node));
+
+        struct node* FlowPathsTracker = FlowPaths[i];
+        int cont = 1;
+        while (cont)
+        {
+            FlowPathsTracker->num = el;
+            //printf("curr el = %d  ", el);
+            FlowPathsTracker->next = (struct node*) malloc(sizeof(struct node));
+            int edg1 = FlowEdg[el];
+            
+            if (is_channel_edge(edg1))
+            {
+                //printf("El %d connected to channel edge with nodes %d %d \n", el, EdgtoVert[edg1*2]+1, EdgtoVert[edg1*2+1]+1);
+                FlowPathsTracker = FlowPathsTracker->next;
+                FlowPathsTracker->num = -1;
+                i++;
+                FlowPathsTracker = FlowPaths[i];
+                boundaryElCounter = boundaryElCounter->next;
+                break;
+            }
+
+            int edg2;
+            int el1 = EdgtoEls[2*edg1];
+            int el2 = EdgtoEls[2*edg1+1];
+            
+            //printf("el1 = %d el2 = %d ",el1, el2);
+            if(el1 == el2)
+            {
+                cont = 0;
+                printf("PATH POINTS TOWARDS THE BOUNDARY OF WATERSHED\n");
+            }
+            else
+            {
+                if(el1==el)
+                {
+                    edg2 = FlowEdg[el2];
+                    el = el2;
+                }
+                else
+                {
+                    edg2 = FlowEdg[el1];
+                    el = el1;
+                }
+                FlowPathsTracker = FlowPathsTracker->next;
+            }
+                
+        }
+    }
+    if (i!= boundaryElNum)
+    {
+        printf("NUMBER OF FLOW PATHS IS NOT EQUAL TO THE TOTAL NUMBER OF BOUNDARY ELEMENTS\n");
+        
+    }
+}
+
+void print_flow_paths()
+{
+    printf("%d\n", boundaryElNum);
+    struct node *boundaryCounter = boundaryEl;
+    int numNodes;
+    for (int i = 0; i < boundaryElNum; i++)
+    {
+        boundaryCounter = boundaryCounter->next;
+        struct node* currFlowPath = FlowPaths[i];
+        // first count the total number
+        int num = 0;
+        while(currFlowPath->num != -1)
+        {
+            currFlowPath = currFlowPath->next;
+            num++;
+            numNodes++;
+        }
+        
+        currFlowPath = FlowPaths[i];
+        printf("%d\n", num);
+        while(currFlowPath->num != -1)
+        {
+            int el = currFlowPath->num;
+            printf("%d \n", el+1);
+            currFlowPath = currFlowPath->next;
+        }
+        
+    }
+    //printf("Total number of nodes = %d\n", numNodes);
+    //printf("Total number of elements = %d\n", NumEl);
+    
+    printf("printing different flow nodes\n");
+    boundaryCounter = boundaryEl;
+    for (int i = 0; i < boundaryElNum; i++)
+    {
+        boundaryCounter = boundaryCounter->next;
+        struct node* currFlowPath = FlowPaths[i];
+        // first count the total number
+        int num = 0;
+        while(currFlowPath->num != -1)
+        {
+            currFlowPath = currFlowPath->next;
+            num++;
+        }
+        
+        currFlowPath = FlowPaths[i];
+        printf("%d\n", num);
+        while(currFlowPath->num != -1)
+        {
+            int el = currFlowPath->num;
+            int edg = localFlowEdg[el];
+            printf("%d\n", edg);
+            currFlowPath = currFlowPath->next;
+        }
+
+        
+    }
+    
+    
+}
+
+void print_channels()
+{
+    struct ptrList* ChannelListBase = ChannelPtr;
+    printf("%d\n", NumChannels);
+    for(int i = 0; i < NumChannels; i++)
+    {
+        
+        int numNodes = 0;
+        struct node* currentChan = ChannelListBase->currentPtr;
+        while(currentChan->num != -1)
+        {
+            numNodes++;
+            currentChan = currentChan->next;
+        }
+        printf("%d\n", numNodes);
+        
+        currentChan = ChannelListBase->currentPtr;
+        while(currentChan->num != -1)
+        {
+            printf("%d\n", currentChan->num+1);
+            currentChan = currentChan->next;
+        }
+        
+        ChannelListBase = ChannelListBase->nextList;
+    }
+    
+}
+
+void store_channels_in_array()
+{
+    struct ptrList* ChannelListBase = ChannelPtr;
+    channels = malloc(NumChannels * sizeof(int*));
+    ChannelNumNodes = malloc(NumChannels*sizeof(int));
+    for (int i = 0; i < NumChannels; i++)
+    {
+        int numEdges = 0;
+        struct node* currentChan = ChannelListBase->currentPtr;
+        while(currentChan->num != -1)
+        {
+            numEdges++;
+            currentChan = currentChan->next;
+        }
+        ChannelNumNodes[i] = numEdges+1;
+        channels[i] = malloc((numEdges+1)*sizeof(int));
+        currentChan = ChannelListBase->currentPtr;
+        for (int j = 0; j < numEdges+1; j++)
+        {
+            channels[i][j] = currentChan->num;
+            currentChan = currentChan->next;
+        }
+        ChannelListBase = ChannelListBase->nextList;
+    }
+    
+}

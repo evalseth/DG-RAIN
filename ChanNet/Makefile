@@ -4,18 +4,18 @@ SRC  := $(wildcard *.c)
 OBJ  := $(patsubst %.c, %.o, $(SRC))
 
 # Options
-CC 	:= gcc 
+CC 	:= /usr/local/bin/gcc-9 ##gcc ##CC=
 CFLAGS	:= -g -Wall -std=c99 
-INCLUDE := -I/usr/include -I$$GSL_INC
-LDFLAGS := -L/usr/lib -L$$GSL_LIB
+INCLUDE := -I/usr/local/include -I$$GSL_INC #added the local path EV
+LDFLAGS := -L/usr/local/lib ##S-L$$GSL_LIB
 LDLIBS 	:= -lgsl -lgslcblas  
 
 
 # Rules
 $(EXEC) : $(OBJ)
-	$(CC) $(LDFLAGS) $(LDLIBS) -o $@ $^
+	$(CC) $(LDFLAGS) $(LDLIBS) -lstdc++ -o $@ $^
 %.o : %.c
-	$(CC) $(CFLAGS) $(DEBUG) $(WD) $(INCLUDE) -c $<
+	$(CC) $(CFLAGS) $(DEBUG) $(WD) $(INCLUDE) -lstdc++ -c $<
 
 main.o: ChannelsAndJunctions.h SimulationSteps.h
 create_channels.o: ChannelsAndJunctions.h MeshAttributes.h
