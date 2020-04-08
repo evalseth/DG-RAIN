@@ -4,18 +4,18 @@ SRC  := $(wildcard *.c)
 OBJ  := $(patsubst %.c, %.o, $(SRC))
 
 # Options
-CC 	:= gcc 
-CFLAGS	:= -g -Wall -std=c99 -O2 -pg
-INCLUDE := -I/usr/include -I$$GSL_INC -I$$EINSPLINE_DIR/include/
-LDFLAGS := -L/usr/lib -L$$GSL_LIB -L$$EINSPLINE_DIR/lib/ 
-LDLIBS 	:= -lm -lgsl -lgslcblas -leinspline -pg
+CC 	:= /usr/local/bin/gcc-9 ##gcc
+CFLAGS	:= -g -Wall -std=c99 -O2 #-pg
+INCLUDE := -I/usr/local/include -I/usr/local/include/einspline -I/usr/local/include/gsl -I$$GSL_INC -I$$EINSPLINE_DIR/include/
+LDFLAGS := -L/usr/local/lib #-L$$GSL_LIB -L$$EINSPLINE_DIR/lib/ 
+LDLIBS 	:= -lm -lgsl -lgslcblas -leinspline #-pg
 
 
 # Rules
 $(EXEC) : $(OBJ)
 	$(CC) $(LDFLAGS) $(LDLIBS) -o $@ $^
 %.o : %.c
-	$(CC) $(CFLAGS) $(DEBUG) $(WD) $(INCLUDE) -c $<
+	$(CC) $(CFLAGS) $(DEBUG) $(WD) $(INCLUDE) -lstdc++ -c $<
 
 main.o: globals.h SimulationSteps.h
 intialize.o: globals.h

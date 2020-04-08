@@ -13,7 +13,7 @@ LDLIBS 	:= -lgsl -lgslcblas
 
 # Rules
 $(EXEC) : $(OBJ)
-	$(CC) $(LDFLAGS) $(LDLIBS) -lstdc++ -o $@ $^
+	$(CC) $(LDFLAGS) $(LDLIBS) -o $@ $^
 %.o : %.c
 	$(CC) $(CFLAGS) $(DEBUG) $(WD) $(INCLUDE) -lstdc++ -c $<
 
