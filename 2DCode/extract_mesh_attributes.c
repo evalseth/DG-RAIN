@@ -64,7 +64,7 @@ void store_mesh(char *FullMesh)
 		char grid[1000];
 		fgets(grid, sizeof(grid), Coordinates);
 		sscanf(grid, "  %d %lf %lf %lf %lf", &nodes, &x_coord[j], &y_coord[j], &z[j], &nFriction[j]);
-		z[j] = z[j];
+		z[j] = -1*z[j]; // Mult by -1 fixes issue with NAN
 
 	}
 

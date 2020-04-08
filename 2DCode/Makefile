@@ -5,7 +5,7 @@ OBJ  := $(patsubst %.c, %.o, $(SRC))
 
 # Options
 CC 	:= /usr/local/bin/gcc-9 ##gcc 
-CFLAGS	:= -g -Wall -std=c99 -O2
+CFLAGS	:= -g -Wall -std=c99 -O2 #-DDEBUG 
 INCLUDE := -I/usr/local/include -I/usr/local/include/gsl  -I$$GSL_INC 
 LDFLAGS := -L/usr/local/lib #-L$$GSL_LIB
 LDLIBS 	:= -lm -lgsl -lgslcblas  
