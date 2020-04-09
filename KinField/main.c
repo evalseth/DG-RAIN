@@ -6,7 +6,7 @@
 * This needs to be changed later so that it will be a parameter than can be read 
 * from a file.
 ************************************************************************************/
-#include <Python.h>
+#include </usr/local/Cellar/python/3.7.7/Frameworks/Python.framework/Versions/3.7/include/python3.7m/Python.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

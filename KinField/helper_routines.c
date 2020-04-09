@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <time.h>
-#include <linux/limits.h>
+#include <limits.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <math.h>

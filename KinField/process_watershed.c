@@ -10,9 +10,9 @@
 #include <math.h>
 #include <unistd.h>
 #include <string.h>
-#include <linux/limits.h>
+#include <limits.h>
 #include <sys/stat.h>
-#include <Python.h>
+#include </usr/local/Cellar/python/3.7.7/Frameworks/Python.framework/Versions/3.7/include/python3.7m/Python.h>
 #include "Globals.h"
 #include "Data_Structures.h"
 #include "process_twoD_domains.h"
@@ -152,7 +152,7 @@ void calculate_flow_edge(int fpNum, int* FlowEdg, int* LocalFlowEdg)
 	PyObject *localFlowDir;
 
 		// Build the name object
-	moduleName = PyString_FromString((char*) "calculate_flow_direction");
+	moduleName = PyUnicode_FromString((char*) "calculate_flow_direction");
 	if (!moduleName)
 	{
 		PyErr_Print();
@@ -192,7 +192,7 @@ void calculate_flow_edge(int fpNum, int* FlowEdg, int* LocalFlowEdg)
 			PyObject *currTri = PyList_New(3);
 			for (int j = 0; j < 3; j++)
 			{
-				PyList_SetItem(currTri, j, PyInt_FromLong(FloodplainList[fpNum]->EltoVert[k*3+j]));
+				PyList_SetItem(currTri, j, PyLong_FromLong(FloodplainList[fpNum]->EltoVert[k*3+j]));
 			}
 			PyList_SetItem(triangles, k, currTri);
 		}
@@ -210,7 +210,7 @@ void calculate_flow_edge(int fpNum, int* FlowEdg, int* LocalFlowEdg)
 
 				for (int el = 0; el < NumEl; el++)
 		{
-			int flowEdg = (int) PyInt_AsLong(PyList_GetItem(localFlowDir, el));
+			int flowEdg = (int) PyLong_AsLong(PyList_GetItem(localFlowDir, el));
 			LocalFlowEdg[el] = flowEdg;
 			FlowEdg[el] = FloodplainList[fpNum]->EltoEdg[el*3+flowEdg];
 		}

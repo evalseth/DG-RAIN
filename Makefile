@@ -6,8 +6,8 @@ OBJ  := $(patsubst %.c, %.o, $(SRC))
 # Options
 CC 	:= /usr/local/bin/gcc-9 
 CFLAGS	:= -g -Wall -std=c99 
-INCLUDE := -I/usr/local/include -I$$GSL_INC -I/usr/local/Cellar/python/3.7.7/Frameworks/Python.framework/Versions/3.7/include/python3.7m/ -I$$PYTHON_INC
-LDFLAGS := -L/usr/local/lib -L/usr/local/Cellar/python/3.7.7/Frameworks/Python.framework/Versions/3.7/lib #-L$$PYTHON_LIB #-L$$GSL_LIB 
+INCLUDE := -I/usr/local/include -I$$GSL_INC -I$$PYTHON_INC
+LDFLAGS := -L/usr/local/lib -L$$GSL_LIB -L$$PYTHON_LIB
 LDLIBS 	:= -lgsl -lgslcblas -lpython3.7 #-lm
 
 
@@ -15,7 +15,7 @@ LDLIBS 	:= -lgsl -lgslcblas -lpython3.7 #-lm
 $(EXEC) : $(OBJ)
 	$(CC) $(LDFLAGS) $(LDLIBS) -o $@ $^
 %.o : %.c
-	$(CC) $(CFLAGS) $(DEBUG) $(WD) $(INCLUDE) -lstdc++ -libstdc++ -c $<
+	$(CC) $(CFLAGS) $(DEBUG) $(WD) $(INCLUDE) -lstdc++ -c $<
 
 main.o: Watershed.h SimulationSteps.h Globals.h
 process_watershed.o: Globals.h
