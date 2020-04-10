@@ -22,6 +22,11 @@ extern void *xcalloc(int items, int size);
 void create_channel_network(char *ChannelCoordinates, char *JunctionCoordinates)
 {
 	FILE *ChanCoordinates = fopen(ChannelCoordinates, "r");
+    //Check if successful
+    if (ChanCoordinates == NULL)
+    {
+         perror("Error opening file: ");
+    }
 	char line[100];
 	fgets(line, sizeof(line),ChanCoordinates);	
 	sscanf(line, "%d", &NumChannels);
